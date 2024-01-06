@@ -93,12 +93,12 @@ const ChatRoom: React.FC = () => {
     const unsubscribe = onSnapshot(q, (QuerySnapshot) => {
       const fetchedMessages: DocumentData[] = [];
       QuerySnapshot.forEach((doc) => {
-        // Asegúrate de que el timestamp se convierte a un número si es necesario
+        // Turn timestap into a number
         const data = doc.data();
         const timestamp = data.createdAt?.seconds ? data.createdAt.seconds * 1000 : Date.now();
         fetchedMessages.push({ ...data, id: doc.id, createdAt: timestamp });
       });
-      // Ordena los mensajes una vez aquí, asegurándote de que el orden sea correcto
+      // Sort Messages
       const sortedMessages = fetchedMessages.sort((a, b) => a.createdAt - b.createdAt);
       setMessages(sortedMessages);
     });
