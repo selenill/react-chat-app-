@@ -1,6 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { auth } from './firebase';
-import { db } from "./firebase";
+import { auth, db } from './firebase';
 
 import { GoogleAuthProvider,  signInWithPopup} from "firebase/auth";
 
@@ -11,9 +10,9 @@ import {
   onSnapshot,
   limit,
   DocumentData,
+  addDoc, 
+  serverTimestamp
 } from "firebase/firestore";
-import { addDoc } from "firebase/firestore";
-import { serverTimestamp } from "firebase/firestore";
 
 import { useAuthState } from 'react-firebase-hooks/auth';
 
@@ -43,7 +42,7 @@ const NavBar: React.FC = () => {
       const provider = new GoogleAuthProvider();
       await signInWithPopup(auth, provider);
     } catch (error) {
-      console.error("Error signing in with Google: ", error);
+      alert(`Error signing in with Google: ${error}`);
     }
   };
 
@@ -51,7 +50,7 @@ const NavBar: React.FC = () => {
     try {
       await auth.signOut();
     } catch (error) {
-      console.error("Error signing out: ", error);
+      alert(`Error signing out: ${error}`);
     }
   };
 
@@ -115,7 +114,7 @@ const ChatRoom: React.FC = () => {
       </div>
       {/* when a new message enters the chat, the screen scrolls down to the scroll div */}
       <span ref={scroll}></span>
-      <SendMessage scroll={scroll} />
+      <MessageForm scroll={scroll} />
     </main>
   );
 };
@@ -137,7 +136,7 @@ const Message: React.FC<DocumentData> = ({ message }) => {
   );
 };
 
-const SendMessage: React.FC<{ scroll: React.RefObject<HTMLSpanElement> }> = ({ scroll }) => {
+const MessageForm: React.FC<{ scroll: React.RefObject<HTMLSpanElement> }> = ({ scroll }) => {
   const [message, setMessage] = useState("");
 
   const sendMsg = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -161,7 +160,7 @@ const SendMessage: React.FC<{ scroll: React.RefObject<HTMLSpanElement> }> = ({ s
       setMessage("");
       scroll.current?.scrollIntoView({ behavior: "smooth" });
     } else {
-      console.error("No user is signed in.");
+      alert("No user is signed in.");
     }
   }
 
