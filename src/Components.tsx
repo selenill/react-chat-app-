@@ -74,7 +74,7 @@ const Home: React.FC = () => {
   return (
     <main className="home">
       <h2>Welcome to React Chat.</h2>
-      <p>Sign in with Google to chat with with your fellow React Developers.</p>
+      <p>Sign in with Google to chat.</p>
     </main>
   );
 };
